@@ -78,5 +78,5 @@ function isPrime(num) {
   return true;
 }
 
-// Export the express app for Vercel
+// Export the Express app for Vercel as a serverless function
 module.exports = app;
