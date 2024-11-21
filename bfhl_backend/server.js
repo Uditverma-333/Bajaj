@@ -38,9 +38,15 @@ app.post("/bfhl", (req, res) => {
     if (file_b64) {
       try {
         const fileBuffer = Buffer.from(file_b64, "base64");
-        fileMimeType = mime.lookup(fileBuffer) || "application/octet-stream";
-        fileSizeKb = (fileBuffer.length / 1024).toFixed(2); // File size in KB
-        fileValid = true;
+        fileMimeType = mime.lookup(fileBuffer) || "application/octet-stream"; // Default MIME type if unknown
+        if (fileMimeType !== false) {
+          fileSizeKb = (fileBuffer.length / 1024).toFixed(2); // File size in KB
+          fileValid = true;
+        } else {
+          fileValid = false;
+          fileMimeType = null;
+          fileSizeKb = 0;
+        }
       } catch (error) {
         fileValid = false;
         fileMimeType = null;
@@ -69,6 +75,11 @@ app.post("/bfhl", (req, res) => {
   }
 });
 
+// GET Endpoint
+app.get("/bfhl", (req, res) => {
+  res.status(200).json({ operation_code: 1 });
+});
+
 // Helper Function: Check Prime
 function isPrime(num) {
   if (num < 2) return false;
@@ -78,5 +89,8 @@ function isPrime(num) {
   return true;
 }
 
-// Export the Express app for Vercel as a serverless function
-module.exports = app;
+// Start Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
