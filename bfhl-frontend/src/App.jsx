@@ -30,7 +30,7 @@ const App = () => {
       const payload = file ? { ...parsedInput, file_b64: file } : parsedInput;
 
       // Make POST request to backend
-      const apiResponse = await axios.post("https://bajaj-three-weld.vercel.app/bfhl", payload);
+      const apiResponse = await axios.post("https://<your-backend-app>.vercel.app/api/bfhl", payload);
       setResponse(apiResponse.data);
     } catch (err) {
       setError(err.message || "Invalid JSON or Server Error");
